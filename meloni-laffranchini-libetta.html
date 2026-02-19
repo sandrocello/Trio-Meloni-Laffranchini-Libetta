@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meloni · Laffranchini · Libetta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ivory: #f5f0e8;
+      --cream: #ede7d9;
+      --deep: #1a1410;
+      --warm-dark: #2c2018;
+      --gold: #b8892a;
+      --gold-light: #d4a84b;
+      --rust: #8b3a1a;
+      --text: #3a2e22;
+      --text-light: #6b5c48;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--ivory);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(245, 240, 232, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(184, 137, 42, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: var(--deep);
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('photo2.jpg');
+      background-size: cover;
+      background-position: center top;
+      filter: brightness(0.3) saturate(0.6);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(26,20,16,0.2) 0%, rgba(26,20,16,0.65) 70%, rgba(26,20,16,0.95) 100%);
+    }
+
+    /* Decorative staff lines */
+    .staff-lines {
+      position: absolute;
+      left: 0; right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      opacity: 0.06;
+      padding: 0 5%;
+    }
+
+    .staff-lines span {
+      display: block;
+      height: 1px;
+      background: var(--ivory);
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      z-index: 2;
+      padding: 2rem;
+      animation: heroFadeIn 1.6s ease both;
+    }
+
+    @keyframes heroFadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: heroFadeIn 1s ease 0.3s both;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: 1.05;
+      color: var(--ivory);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: heroFadeIn 1s ease 0.5s both;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .hero-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 2rem auto;
+      opacity: 0;
+      animation: heroFadeIn 1s ease 0.8s both;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      color: rgba(245,240,232,0.5);
+      text-transform: uppercase;
+      margin-bottom: 3.5rem;
+      opacity: 0;
+      animation: heroFadeIn 1s ease 1s both;
+    }
+
+    .hero-instruments {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      opacity: 0;
+      animation: heroFadeIn 1s ease 1.2s both;
+    }
+
+    .instrument-item {
+      text-align: center;
+    }
+
+    .instrument-item .name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--ivory);
+      letter-spacing: 0.05em;
+    }
+
+    .instrument-item .role {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 0.3rem;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: heroFadeIn 1s ease 1.8s both;
+    }
+
+    .hero-scroll span {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.3);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.1); }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 7rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-wrapper {
+      background: var(--ivory);
+    }
+
+    .section-wrapper.dark {
+      background: var(--warm-dark);
+    }
+
+    .section-label {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 0.68rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      display: inline-block;
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.2;
+      margin-bottom: 3rem;
+      color: var(--deep);
+    }
+
+    .dark .section-title { color: var(--ivory); }
+
+    /* ── CHI SIAMO ── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    .about-intro {
+      grid-column: 1 / -1;
+    }
+
+    .about-intro .about-text {
+      font-size: 1.5rem;
+      max-width: 800px;
+    }
+
+    .musicians-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      grid-column: 1 / -1;
+      margin-top: 1rem;
+    }
+
+    .musician-card {
+      border-top: 1px solid rgba(184,137,42,0.3);
+      padding-top: 1.5rem;
+    }
+
+    .musician-card .card-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      color: var(--deep);
+      margin-bottom: 0.3rem;
+    }
+
+    .musician-card .card-role {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .musician-card .card-bio {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--text-light);
+    }
+
+    /* ── CONCERTI ── */
+    .concerti-wrapper {
+      background: var(--warm-dark);
+    }
+
+    .concerti-wrapper section {
+      color: var(--ivory);
+    }
+
+    .concerti-wrapper .section-title {
+      color: var(--ivory);
+    }
+
+    .concerti-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .concerto-item {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid rgba(245,240,232,0.08);
+      transition: all 0.25s ease;
+      cursor: default;
+    }
+
+    .concerto-item:first-child {
+      border-top: 1px solid rgba(245,240,232,0.08);
+    }
+
+    .concerto-item:hover {
+      padding-left: 1rem;
+      border-color: rgba(184,137,42,0.3);
+    }
+
+    .concerto-date {
+      text-align: center;
+    }
+
+    .concerto-date .day {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+
+    .concerto-date .month-year {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+      margin-top: 0.2rem;
+    }
+
+    .concerto-info .venue {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      color: var(--ivory);
+      margin-bottom: 0.3rem;
+    }
+
+    .concerto-info .program {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: rgba(245,240,232,0.6);
+    }
+
+    .concerto-info .city {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 0.4rem;
+    }
+
+    .concerto-tag {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(184,137,42,0.4);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+    }
+
+    /* ── MEDIA ── */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .media-card {
+      background: var(--cream);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 4/3;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .media-card:hover { transform: translateY(-4px); }
+
+    .media-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      background: linear-gradient(135deg, #e8dfc9, #d4c9b0);
+    }
+
+    .media-placeholder .media-icon {
+      font-size: 2rem;
+      opacity: 0.4;
+    }
+
+    .media-placeholder .media-label {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .media-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(26,20,16,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .media-card:hover .media-overlay { opacity: 1; }
+
+    .play-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+
+    /* Recensione */
+    .review-block {
+      margin-top: 5rem;
+      padding: 3rem 4rem;
+      background: var(--cream);
+      border-left: 3px solid var(--gold);
+      position: relative;
+    }
+
+    .review-block::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 8rem;
+      line-height: 0;
+      position: absolute;
+      top: 3rem;
+      left: 2rem;
+      color: var(--gold);
+      opacity: 0.15;
+    }
+
+    .review-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      line-height: 1.8;
+      color: var(--text);
+      position: relative;
+      z-index: 1;
+    }
+
+    .review-source {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 1.5rem;
+    }
+
+    /* ── CONTATTI ── */
+    .contact-wrapper {
+      background: var(--deep);
+    }
+
+    .contact-wrapper section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .contact-wrapper .section-title { color: var(--ivory); }
+    .contact-wrapper .section-label { color: var(--gold); }
+
+    .contact-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      line-height: 1.75;
+      color: rgba(245,240,232,0.55);
+    }
+
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .contact-item .c-label {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .contact-item a,
+    .contact-item span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--ivory);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-item a:hover { color: var(--gold-light); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep);
+      border-top: 1px solid rgba(184,137,42,0.15);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer .footer-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: rgba(245,240,232,0.3);
+    }
+
+    footer .footer-copy {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 300;
+      color: rgba(245,240,232,0.2);
+    }
+
+    /* ── UPLOADER HINT ── */
+    .upload-hint {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.8rem 1.5rem;
+      border: 1px dashed rgba(184,137,42,0.4);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .upload-hint:hover {
+      background: rgba(184,137,42,0.08);
+    }
+
+
+    /* ── VIDEO ── */
+    .video-section-wrapper {
+      background: var(--cream);
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .video-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .video-embed {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: none;
+      display: block;
+    }
+
+    .video-caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .video-caption .arr {
+      font-family: 'Lato', sans-serif;
+      font-style: normal;
+      font-size: 0.68rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--text-light);
+      display: block;
+      margin-top: 0.2rem;
+    }
+
+    .yt-channel-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      border: 1px solid rgba(184,137,42,0.4);
+      padding: 0.7rem 1.4rem;
+      transition: all 0.2s;
+    }
+
+    .yt-channel-link:hover {
+      background: rgba(184,137,42,0.08);
+      border-color: var(--gold);
+    }
+
+    @media (max-width: 900px) {
+      .video-grid { grid-template-columns: 1fr; }
+    }
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      section { padding: 5rem 1.5rem; }
+      #about { grid-template-columns: 1fr; gap: 2rem; }
+      .musicians-grid { grid-template-columns: 1fr; }
+      .media-grid { grid-template-columns: 1fr 1fr; }
+      .concerto-item { grid-template-columns: 80px 1fr; }
+      .concerto-tag { display: none; }
+      .contact-wrapper section { grid-template-columns: 1fr; gap: 2.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .hero-instruments { flex-direction: column; gap: 1.5rem; }
+      .review-block { padding: 2rem 1.5rem 2rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Meloni · Laffranchini · Libetta</a>
+  <ul class="nav-links">
+    <li><a href="#about">Chi siamo</a></li>
+    <li><a href="#concerti">Concerti</a></li>
+    <li><a href="#video">Video</a></li><li><a href="#media">Foto</a></li>
+    <li><a href="#contatti">Contatti</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-bg"></div>
+  <div class="staff-lines">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Trio da Camera</p>
+    <h1 class="hero-title">
+      Meloni<br>
+      <em>Laffranchini</em><br>
+      Libetta
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-subtitle">Clarinetto · Violoncello · Pianoforte</p>
+    <div class="hero-instruments">
+      <div class="instrument-item">
+        <div class="name">Fabrizio Meloni</div>
+        <div class="role">Clarinetto</div>
+      </div>
+      <div class="instrument-item">
+        <div class="name">Sandro Laffranchini</div>
+        <div class="role">Violoncello</div>
+      </div>
+      <div class="instrument-item">
+        <div class="name">Francesco Libetta</div>
+        <div class="role">Pianoforte</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scopri</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- CHI SIAMO -->
+<div class="section-wrapper">
+  <section id="about">
+    <div class="about-intro">
+      <div class="section-label">Chi siamo</div>
+      <h2 class="section-title">Tre voci, un solo respiro</h2>
+      <p class="about-text">
+        Meloni, Laffranchini e Libetta uniscono tre delle voci più distinctive della musica da camera italiana in un ensemble di rara coesione. Il loro percorso si muove tra il grande repertorio ottocentesco e la musica contemporanea, con un suono che privilegia il dialogo autentico fra gli strumenti.
+      </p>
+    </div>
+
+    <div class="musicians-grid">
+      <div class="musician-card">
+        <div class="card-name">Fabrizio Meloni</div>
+        <div class="card-role">Clarinetto</div>
+        <p class="card-bio">Primo clarinetto dell'Orchestra del Teatro e della Filarmonica della Scala dal 1984, vincitore dei concorsi ARD di Monaco e Primavera di Praga nel 1986. Docente presso l'Accademia del Teatro alla Scala, ha tenuto masterclass nei principali conservatori mondiali da Parigi a Tokyo.</p>
+      </div>
+      <div class="musician-card">
+        <div class="card-name">Sandro Laffranchini</div>
+        <div class="card-role">Violoncello</div>
+        <p class="card-bio">Primo violoncello solista dell'Orchestra e della Filarmonica della Scala dal 1999, ha ricoperto lo stesso ruolo presso London Symphony Orchestra, Opernhaus Zürich e World Orchestra for Peace. Suona un violoncello Pedrinelli di Crespano del Grappa del 1840.</p>
+      </div>
+      <div class="musician-card">
+        <div class="card-name">Francesco Libetta</div>
+        <div class="card-role">Pianoforte</div>
+        <p class="card-bio">Pianista e compositore di vasta cultura, ha realizzato integrali pianistiche di Beethoven, Händel, Chopin e Godowsky. Le sue registrazioni sono pluripremiate dalla critica internazionale. Steinway Artist, dirige i corsi di perfezionamento presso la Fondazione Grassi di Martina Franca.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- CONCERTI -->
+<div class="concerti-wrapper">
+  <section id="concerti">
+    <div class="section-label">Agenda</div>
+    <h2 class="section-title">Prossimi Concerti</h2>
+    <div class="concerti-list">
+
+      <div class="concerto-item">
+        <div class="concerto-date">
+          <div class="day">8</div>
+          <div class="month-year">Feb 2026</div>
+        </div>
+        <div class="concerto-info">
+          <div class="venue">Ridotto dei Palchi "Arturo Toscanini" — Teatro alla Scala</div>
+          <div class="program">Beethoven · Laffranchini · Brahms</div>
+          <div class="city">Milano</div>
+        </div>
+        <div class="concerto-tag">Stagione</div>
+      </div>
+
+      <!-- Aggiungere qui i prossimi concerti -->
+      <div class="concerto-item" style="opacity:0.4; pointer-events:none;">
+        <div class="concerto-date">
+          <div class="day">—</div>
+          <div class="month-year">In arrivo</div>
+        </div>
+        <div class="concerto-info">
+          <div class="venue">Prossime date in aggiornamento</div>
+          <div class="program">Per informazioni scrivere a <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="80f0e9e1eeefede5e4e9efe6eff2f4e5c0e7ede1e9ecaee3efed">[email&#160;protected]</a></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+
+<!-- VIDEO -->
+<div class="video-section-wrapper">
+  <section id="video">
+    <div class="section-label">Video</div>
+    <h2 class="section-title">Dal vivo — Teatro alla Scala</h2>
+    <div class="video-grid">
+      <div class="video-item">
+        <iframe class="video-embed" src="https://www.youtube.com/embed/WMmBLMIVIv8" title="Luigi Tenco - Lontano" allowfullscreen></iframe>
+        <div class="video-caption">
+          Luigi Tenco — <em>Lontano</em>
+          <span class="arr">Arrangiamento di S. Laffranchini e L. Moscardi</span>
+        </div>
+      </div>
+      <div class="video-item">
+        <iframe class="video-embed" src="https://www.youtube.com/embed/O0wQS5kfLLs" title="Luigi Tenco - Vedrai, vedrai" allowfullscreen></iframe>
+        <div class="video-caption">
+          Luigi Tenco — <em>Vedrai, vedrai</em>
+          <span class="arr">Arrangiamento di S. Laffranchini e L. Moscardi</span>
+        </div>
+      </div>
+    </div>
+    <a href="https://youtube.com/@sandrolaffranchini?si=6R44I03yj4QPJCT3" target="_blank" class="yt-channel-link">
+      ▶ &nbsp; Tutti i video sul canale YouTube
+    </a>
+  </section>
+</div>
+
+<!-- MEDIA -->
+<div class="section-wrapper">
+  <section id="media">
+    <div class="section-label">Media</div>
+    <h2 class="section-title">Fotografie · Video · Audio</h2>
+
+    <!-- GRIGLIA FOTO – foto reali -->
+    <div class="media-grid">
+      <div class="media-card">
+        <img src="photo1.jpg" alt="Trio - foto di gruppo" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="media-overlay"><div class="play-btn">↗</div></div>
+      </div>
+      <div class="media-card">
+        <img src="photo2.jpg" alt="Trio - foto ufficiale" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="media-overlay"><div class="play-btn">↗</div></div>
+      </div>
+      <div class="media-card">
+        <img src="photo3.jpg" alt="Trio - backstage" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="media-overlay"><div class="play-btn">↗</div></div>
+      </div>
+      <div class="media-card">
+        <img src="photo7.jpg" alt="Amadeus - copertina con CD" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="media-overlay"><div class="play-btn">↗</div></div>
+      </div>
+      <div class="media-card">
+        <img src="photo8.jpg" alt="Amadeus - copertina giugno 2024" style="width:100%;height:100%;object-fit:cover;"/>
+        <div class="media-overlay"><div class="play-btn">↗</div></div>
+      </div>
+      <div class="media-card">
+        <img src="photo9.jpg" alt="CD Amadeus - Beethoven e Brahms" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
+        <div class="media-overlay"><div class="play-btn">↗</div></div>
+      </div>
+    </div>
+
+    <!-- CREDITS FOTO -->
+    <p style="font-family:'Lato',sans-serif;font-size:0.68rem;font-weight:300;letter-spacing:0.15em;color:var(--text-light);text-align:right;margin-top:0.8rem;margin-bottom:0;">
+      Fotografie: <em>Stefania Varca</em> &nbsp;·&nbsp; Copertina e CD per gentile concessione di <em>Amadeus</em>
+    </p>
+
+    <!-- RECENSIONE -->
+    <div class="review-block">
+      <p class="review-text" style="font-style:normal; font-size:1rem; font-family:'Lato',sans-serif; font-weight:300; line-height:1.85; margin-bottom:1.5rem; color: var(--text-light);">
+        L'8 febbraio 2026, al Ridotto Toscanini della Scala, Meloni, Laffranchini e Libetta hanno dato vita a un concerto di rara intensità — tutto esaurito, due bis richiesti a furor di popolo con sorprendenti arrangiamenti di Tenco. La loro storia nasce da un cd per Amadeus nel 2024 ("Il Trio delle Meraviglie"), quando Libetta, chiamato in extremis a sostituire un pianista forfait, studiò i due trii in pochi giorni con esito straordinario. In concerto, Meloni è il leader dal suono potente e morbido; Laffranchini crea un cuscino sonoro perfetto con il suo Pedrinelli del 1840; Libetta domina ogni difficoltà con disinvoltura disarmante. Il trio era in stato di grazia.
+      </p>
+      <p class="review-text">
+        «Impresari, direttori artistici, se volete consegnare al vostro pubblico una serata magica, date un concerto a questi tre meravigliosi musicisti. È stata una domenica mattina semplicemente indimenticabile.»
+      </p>
+      <div class="review-source">— Il Trio delle Meraviglie · Febbraio 2026</div>
+    </div>
+  </section>
+</div>
+
+<!-- CONTATTI -->
+<div class="contact-wrapper">
+  <section id="contatti">
+    <div>
+      <div class="section-label">Contatti</div>
+      <h2 class="section-title">Booking &<br>Informazioni</h2>
+      <p class="contact-tagline">
+        Per richieste di concerti, collaborazioni e informazioni sulla stagione, non esitate a contattarci. Risponderemo nel più breve tempo possibile.
+      </p>
+    </div>
+    <div class="contact-details">
+      <div class="contact-item">
+        <span class="c-label">Email</span>
+        <a href="/cdn-cgi/l/email-protection#13637a727d7c7e76777a7c757c61677653747e727a7f3d707c7e"><span class="__cf_email__" data-cfemail="9dedf4fcf3f2f0f8f9f4f2fbf2efe9f8ddfaf0fcf4f1b3fef2f0">[email&#160;protected]</span></a>
+      </div>
+      <div class="contact-item">
+        <span class="c-label">Telefono</span>
+        <a href="tel:+3473886236">+39 347 388 6236</a>
+      </div>
+      <div class="contact-item">
+        <span class="c-label">Ensemble</span>
+        <span>Meloni · Laffranchini · Libe
